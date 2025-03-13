@@ -1,0 +1,16 @@
+.env
+
+.git
+.gitignore
+
+node_modules/
+vendor/
+
+
+*.log
+
+*.tmp
+*.bak
+*.swp
+
+README.md
