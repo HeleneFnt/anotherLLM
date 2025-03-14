@@ -34,6 +34,19 @@ services:
       - IS_PERSISTENT=TRUE
     volumes:
       - chroma_data:/chroma/chroma/
+
+
+  ingest_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ingest
+    hostname: ingest
+    restart: unless-stopped
+    volumes:
+      - ./scripts:/app/scripts
+      - ./documents:/app/documents 
+
 volumes:
   ollama_data:
   chroma_data:
