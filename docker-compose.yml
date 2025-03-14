@@ -2,10 +2,14 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: ollama
+    hostname: ollama
+    restart: unless-stopped
     ports:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
+      - ./entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/entrypoint.sh"]
 
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
@@ -17,7 +21,19 @@ services:
     depends_on:
       - ollama
     environment:
-      OLLAMA_SERVER_URL: http://ollama:11434
+      OLLAMA_BASE_URL: http://ollama:11434
 
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: chromadb
+    hostname: chromadb
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+    volumes:
+      - chroma_data:/chroma/chroma/
 volumes:
-  ollama_data:  
+  ollama_data:
+  chroma_data:
